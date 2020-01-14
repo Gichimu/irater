@@ -7,7 +7,17 @@ from .forms import createForm, editForm, MyCustomLoginForm, MyCustomSetPasswordF
 
 def home(request):
     title = 'Home'
-    return render(request, 'index.html', {'title': title})
+    try:
+        posts = Project.objects.all()
+        for post in posts:
+            name = post.title.split()
+            if len(name) > 1:
+                post.title = '_'.join(name)
+            else:
+                pass
+    except Project.DoesNotExist:
+        posts = None
+    return render(request, 'index.html', {'title': title, 'posts': posts})
 
 def signup(request):
     form = SignupForm()
@@ -28,11 +38,12 @@ def changePassword(request):
 
 def profile(request, user_id):
     user = request.user
-    posts = Project.objects.filter(profile_id = user_id)
+    prof = Profile.objects.get(user_id = user_id)
+    posts = Project.objects.filter(profile_id = prof.id)
     for post in posts:
-        name = post.image_name.split()
+        name = post.title.split()
         if len(name) > 1:
-            post.image_name = '_'.join(name)
+            post.title = '_'.join(name)
         else:
             pass
     # username = user.get_username
@@ -66,7 +77,14 @@ def profile(request, user_id):
 
 def create_post(request):
     form = createForm(request.POST, request.FILES)
+    profile = Profile.objects.filter(user_id = request.user.id)
     if form.is_valid():
+        # title = request.POST.get['title']
+        # desc = request.POST['description']
+        # photo = request.POST['photo']
+        # url = request.POST['link']
+
+        # post = Project(title = title, description = desc, photo = photo, link = url)
         post = form.save(commit = False)
         post.profile = request.user
         post.save()
@@ -80,11 +98,17 @@ def update_profile(request):
         form = editForm(request.POST, request.FILES)
         if form.is_valid():
             usr = request.user
-            Profile.objects.filter(user_id=usr.id).delete()
-            # photo = request.POST['photo']
-            # bio = request.POST['bio']
-            # profile = Profile.objects.filter(user_id = request.user.id).update(photo = photo, bio = bio)
-            profile = form.save(commit = False)
-            profile.user = request.user
-            profile.save()
+            try:
+                prof = Profile.objects.filter(user_id=usr.id)
+                prof.delete()
+                # photo = request.POST['photo']
+                # bio = request.POST['bio']
+                # profile = Profile.objects.filter(user_id = request.user.id).update(photo = photo, bio = bio)
+                profile = form.save(commit = False)
+                profile.user = request.user
+                profile.save()
+            except Profile.DoesNotExist:
+                profile = form.save(commit = False)
+                profile.user = request.user
+                profile.save()
         return redirect('profile', user_id = request.user.id)

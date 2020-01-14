@@ -4,14 +4,56 @@
     <div class="container-fluid top-content">
         <div class="row">
             <div class="text-center">
-                <h5>My app</h5>
-                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nisi nobis error sint, eos excepturi ipsa iste enim id, eum aperiam autem beatae maxime consectetur! Amet, nobis. Corporis amet ipsam temporibus.
-                Aspernatur laboriosam, adipisci vero doloremque, at libero dicta nostrum architecto praesentium obcaecati eum? Quae laudantium reprehenderit laboriosam libero veniam. Quae sed autem accusamus dolore dicta vero minus itaque sit eligendi.
-                Atque quisquam inventore totam quod provident dolore impedit commodi porro? Facere error veniam, dolorem aliquam sapiente, excepturi sequi, dolor recusandae consequuntur optio vel ullam ducimus nulla voluptates culpa earum aut.
-                Earum obcaecati alias consequuntur id dolores cum est. Quidem, laudantium obcaecati id rem magnam ipsum nihil libero voluptate laborum dicta impedit a sit sequi saepe porro accusantium aliquid quis debitis?
-                Dicta distinctio vel voluptas, officia nemo quidem repudiandae totam aut. Omnis minima amet hic corporis eos asperiores, fugit reprehenderit sapiente ratione nobis voluptatibus pariatur laboriosam sunt nesciunt officia earum at.</p>
+                    <div class="content gallery-content">
+                            {% for post in posts %}
+                            <div class="card gallery-card">
+                                <div class="card-body">
+                                    <a href="#{{post.title}}" data-toggle="modal"><img class="img-fluid img-thumbnail gallery" src="{{ post.photo.url }}" alt=""></a>
+                                </div>
+                            </div>     
+                            <!-- Modal -->
+                            <div class="modal fade" id="{{post.title}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <a href="profile/{{post.profile_user_id}}"><b>{{post.profile_user}}</b></a>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <img class="modal-image" src="{{post.photo.url}}" alt="">
+                                        </div>
+                                        <div class="modal-footer">
+                                            <div class="container">
+                                                <div class="row">
+                                                    <div class="col">
+                                                            {{post.image_name}}
+                                                    </div>
+                                                    <div class="col">
+                                                        <a href=""><i class="far fa-comments"></i></a>
+                                                    </div>
+                                                    <div class="col float-right">
+                                                    22 <i class="far fa-thumbs-up"></i> | 
+                                                        <i class="far fa-thumbs-down"></i> 9
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            {% empty %}
+                                <div class="row">
+                                    <div class="alert alert-warning">
+                                    <h2 class="text-center">There are no Projects to display</h2>
+                                </div>
+                                </div>
+                            {%endfor%}
+                        </div>
+                
             </div>
-            <p>This is the landing page</p>
+            
             
         </div>
     </div>

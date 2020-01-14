@@ -15,7 +15,11 @@
             {%if user.is_authenticated %}
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        {{ user.socialaccount_set.all.0.extra_data.name }}
+                {%if user.socialaccount_set.all.0.extra_data.name%} 
+                    {{ user.socialaccount_set.all.0.extra_data.name }}
+                {%else%}
+                    {{ username }}
+                {%endif%}
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="/profile/{{user.id}}">Profile</a>
