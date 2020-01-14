@@ -28,16 +28,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # Application definition
 
 INSTALLED_APPS = [
-    'rates',
-    'bootstrap4',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.google',
+    # 'pypuploadcare.dj',
     'django.contrib.admin',
     'django.contrib.sites',
     'django.contrib.auth',
@@ -45,7 +40,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-]
+    'rates',
+    'bootstrap4',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+] 
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -72,10 +73,16 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media'
             ],
         },
     },
 ]
+
+UPLOADCARE = {
+    'pub_key': '21fcec685f148c1b463b',
+    'secret': '893076774a7f91e5145c',
+}
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
@@ -112,7 +119,11 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-
+ACCOUNT_FORMS = {
+    'login': 'rates.forms.MyCustomLoginForm',
+    'signup': 'rates.forms.MyCustomSignupForm',
+    
+}
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
 
@@ -145,7 +156,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
@@ -163,3 +174,10 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'gichimueric12@gmail.com'
+EMAIL_HOST_PASSWORD = '2k4llyw4g'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
