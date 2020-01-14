@@ -26,7 +26,7 @@ MODE = config('MODE', default='dev')
 SECRET_KEY = '3&ab%)$iw($or=owg_lgn=5y*2i4fw@tw8=r2pi_+m1vos3=!r'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', default=False, cast=bool)
+DEBUG = True
 
 # ALLOWED_HOSTS = []
 
