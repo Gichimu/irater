@@ -128,3 +128,11 @@ a:hover {
 .profile {
     margin-top: 1%;
 }
+
+.gallery-card {
+    margin: 5px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}

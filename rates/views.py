@@ -23,9 +23,9 @@ def signup(request):
     form = SignupForm()
     return render(request, 'account/signup.html', {'form': form})
 
-def login(request):
-    form = MyCustomLoginForm()
-    return render(request, 'account/login.html', {'form': form})
+# def login(request):
+#     form = MyCustomLoginForm()
+#     return render(request, 'account/login.html', {'form': form})
 
 def resetPassword(request):
     form = MyCustomSetPasswordForm()
@@ -38,14 +38,18 @@ def changePassword(request):
 
 def profile(request, user_id):
     user = request.user
-    prof = Profile.objects.get(user_id = user_id)
-    posts = Project.objects.filter(profile_id = prof.id)
-    for post in posts:
-        name = post.title.split()
-        if len(name) > 1:
-            post.title = '_'.join(name)
-        else:
-            pass
+    try:
+        prof = Profile.objects.get(user_id = user_id)
+        posts = Project.objects.filter(profile_id = prof.id)
+        for post in posts:
+            name = post.title.split()
+            if len(name) > 1:
+                post.title = '_'.join(name)
+            else:
+                pass
+    except Profile.DoesNotExist:
+        posts = None
+    
     # username = user.get_username
     username = user.get_username()
     form = editForm()
@@ -79,11 +83,11 @@ def create_post(request):
     form = createForm(request.POST, request.FILES)
     profile = Profile.objects.filter(user_id = request.user.id)
     if form.is_valid():
-        # title = request.POST.get['title']
-        # desc = request.POST['description']
-        # photo = request.POST['photo']
-        # url = request.POST['link']
-
+        title = request.POST.get['title']
+        desc = request.POST['description']
+        photo = request.POST['photo']
+        url = request.POST['link']
+        print(title)
         # post = Project(title = title, description = desc, photo = photo, link = url)
         post = form.save(commit = False)
         post.profile = request.user
@@ -112,3 +116,8 @@ def update_profile(request):
                 profile.user = request.user
                 profile.save()
         return redirect('profile', user_id = request.user.id)
+
+
+def post(request, post_id):
+    post = Project.objects.get(pk = post_id)
+    return render(request, 'post.html', {'post': post})

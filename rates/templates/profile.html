@@ -127,10 +127,10 @@
     <div class="modal-content">
 
       <div class="modal-body">
-        <form action="{%url 'create_posts'%}" method="post">
+        <form action="{% url 'create_posts' %}" method="post">
           {% csrf_token %}
           {% bootstrap_form create_form %}
-          <button class="btn btn-outline-success btn-sm" value="Save">Save</button>
+          <button class="btn btn-outline-success btn-sm" type="submit" value="Save">Save</button>
         </form>
       </div>
 

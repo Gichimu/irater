@@ -7,8 +7,22 @@
                     <div class="content gallery-content">
                             {% for post in posts %}
                             <div class="card gallery-card">
+                                <div class="card-header">
+                                    <h5>{{post.title}}</h5>
+                                </div>
                                 <div class="card-body">
-                                    <a href="#{{post.title}}" data-toggle="modal"><img class="img-fluid img-thumbnail gallery" src="{{ post.photo.url }}" alt=""></a>
+                                    <a href="post/{{post.id}}" ><img class="img-fluid img-thumbnail gallery" src="{{ post.photo.url }}" alt=""></a>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="row">
+                                        <div class="col">
+                                            {{post.description | truncatechars:20}}
+                                        </div>
+                                        <div class="col">
+                                                <i class="far fa-star"></i> 
+                                            5.5
+                                        </div>
+                                    </div>
                                 </div>
                             </div>     
                             <!-- Modal -->
