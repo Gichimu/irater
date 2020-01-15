@@ -129,8 +129,7 @@ a:hover {
     margin-top: 1%;
 }
 
-.gallery-card {
-    margin: 5px;
+.gallery-content {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;

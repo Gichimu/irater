@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'^edit/profile', views.update_profile, name = 'update_profile'),
     url(r'^create/post', views.create_post, name = 'create_posts'),
     url(r'^post/(?P<post_id>\d+)', views.post, name = 'post'),
+    url(r'^post/rate/(?P<post_id>\d+)', views.rate, name = 'rate'),
 ] 
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

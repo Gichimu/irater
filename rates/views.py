@@ -3,7 +3,7 @@ from allauth.account.forms import LoginForm, ChangePasswordForm, SignupForm
 from allauth.account.views import LoginView
 from django.contrib.auth.models import User
 from .models import Profile, Project
-from .forms import createForm, editForm, MyCustomLoginForm, MyCustomSetPasswordForm
+from .forms import createForm, editForm, MyCustomLoginForm, MyCustomSetPasswordForm, ratingForm
 
 def home(request):
     title = 'Home'
@@ -120,4 +120,36 @@ def update_profile(request):
 
 def post(request, post_id):
     post = Project.objects.get(pk = post_id)
-    return render(request, 'post.html', {'post': post})
+    form = ratingForm()
+    # if request == 'POST':
+    #     form = ratingForm(request.POST, request.FILES)
+    #     if form.is_valid():
+    #         usability = request.POST.get('usability')
+    #         design = request.POST.get('design')
+    #         content = request.POST.get('content')
+
+    #         average = (usability + design + content) / 3
+    #         post = form.save(commit = False)
+    #         post.avg = average
+    #         post.save()
+    #         print('your rating has been sent')
+    # else:
+    #     form = ratingForm()
+    return render(request, 'post.html', {'post': post, 'form': form})
+
+def rate(request, post_id):
+    
+    if request == 'POST':
+        form = ratingForm(request.POST, request.FILES)
+        if form.is_valid():
+            usability = request.POST.get('usability')
+            design = request.POST.get('design')
+            content = request.POST.get('content')
+
+            average = (usability + design + content) / 3
+            post = form.save(commit = False)
+            post.avg = average
+            post.save()
+            print('your rating has been sent')
+    return redirect('post', post_id = post_id)
+    

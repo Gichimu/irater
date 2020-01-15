@@ -1,6 +1,7 @@
 from django.db import models
 from pyuploadcare.dj.models import ImageField
 from django.contrib.auth.models import User
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 class Profile(models.Model):
     avatar = models.ImageField(upload_to='images')
@@ -19,6 +20,16 @@ class Project(models.Model):
 
     def __str__(self):
         return self.title
+
+class Rating(models.Model):
+    usability = models.PositiveIntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(10)])
+    design = models.PositiveIntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(10)])
+    content = models.PositiveIntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(10)])
+    avg = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.usability
+
 
 
 
