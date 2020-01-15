@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from allauth.account.forms import LoginForm, ChangePasswordForm, SignupForm
 from allauth.account.views import LoginView
 from django.contrib.auth.models import User
-from .models import Profile, Project
+from .models import Profile, Project, Rating
 from .forms import createForm, editForm, MyCustomLoginForm, MyCustomSetPasswordForm, ratingForm
 
 def home(request):
@@ -81,7 +81,7 @@ def profile(request, user_id):
 
 def create_post(request):
     form = createForm(request.POST, request.FILES)
-    profile = Profile.objects.filter(user_id = request.user.id)
+    # profile = Profile.objects.filter(user_id = request.user.id)
     if form.is_valid():
         # title = request.POST.get['title']
         # desc = request.POST['description']
@@ -137,15 +137,25 @@ def post(request, post_id):
 
 def rate(request, post_id):
     form = ratingForm(request.POST, request.FILES)
+    try:
+        rating = Rating.objects.get(post = post_id)
+    except Rating.DoesNotExist:
+        rating = None
+
     if form.is_valid():
         usability = request.POST.get('usability')
         design = request.POST.get('design')
         content = request.POST.get('content')
 
-        average = (int(usability) + int(design) + int(content)) / 3
-        post = form.save(commit = False)
-        post.avg = average
-        post.save()
+        avg = (int(usability) + int(design) + int(content)) / 3
+        if rating:
+            average = (avg + rating.avg) / 2
+        else:
+            average = avg 
+        rate = form.save(commit = False)
+        rate.avg = average
+        # rate.post = post_id
+        rate.save()
         print('your rating has been sent')
     return redirect('post', post_id = post_id)
     

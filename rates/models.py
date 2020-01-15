@@ -1,5 +1,5 @@
 from django.db import models
-from pyuploadcare.dj.models import ImageField
+# from pyuploadcare.dj.models import ImageField
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 
@@ -22,6 +22,7 @@ class Project(models.Model):
         return self.title
 
 class Rating(models.Model):
+    post = models.ForeignKey(Project, on_delete=models.CASCADE, default='')
     usability = models.PositiveIntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(10)])
     design = models.PositiveIntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(10)])
     content = models.PositiveIntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(10)])
