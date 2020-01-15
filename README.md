@@ -62,7 +62,7 @@ To run the application on a local server, the user needs to install the followin
  Incase of any bugs encountered contact [gichimueric12@gmail.com]
 
 ## Website live link
-[Personal Gallery](https://irater.herokuapp.com/)
+[Rating app](https://irater.herokuapp.com/)
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/Gichimu/irater/blob/master/LICENCE.md) for details
