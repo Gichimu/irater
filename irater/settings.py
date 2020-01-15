@@ -26,7 +26,7 @@ MODE = config('MODE', default='dev')
 SECRET_KEY = '3&ab%)$iw($or=owg_lgn=5y*2i4fw@tw8=r2pi_+m1vos3=!r'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # ALLOWED_HOSTS = []
 
@@ -34,6 +34,7 @@ DEBUG = True
 # Application definition
 
 INSTALLED_APPS = [
+    # 'pypuploadcare.dj',
     'rates.apps.RatesConfig',
     'bootstrap4',
     'allauth',
@@ -47,8 +48,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
-    # 'pypuploadcare.dj',
 ] 
 
 MIDDLEWARE = [
@@ -133,19 +132,19 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 # }
 
 # Provider specific settings
-SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        # For each OAuth based provider, either add a ``SocialApp``
-        # (``socialaccount`` app) containing the required client
-        # credentials, or list them here:
-        'APP': {
-            'client_id': '666817551011-ksdgfgaeti0gthlboi66r07325lb4bs3.apps.googleusercontent.com',
-            'secret': 'pjLzS02ic6MmWP8VIyRU8uBp',
-            'key': ''
-        }
+# SOCIALACCOUNT_PROVIDERS = {
+#     'google': {
+#         # For each OAuth based provider, either add a ``SocialApp``
+#         # (``socialaccount`` app) containing the required client
+#         # credentials, or list them here:
+#         'APP': {
+#             'client_id': '666817551011-ksdgfgaeti0gthlboi66r07325lb4bs3.apps.googleusercontent.com',
+#             'secret': 'pjLzS02ic6MmWP8VIyRU8uBp',
+#             'key': ''
+#         }
         
-    }
-}
+#     }
+# }
 
 ACCOUNT_FORMS = {
     'login': 'rates.forms.MyCustomLoginForm',
