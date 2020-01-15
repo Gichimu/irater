@@ -15,6 +15,15 @@
 
     {% block styles %}
         {% bootstrap_css %}
+        <!-- Material Design Bootstrap -->
+        <link rel="stylesheet" href="{% static 'css/mdb.min.css' %}">
+        <!-- MDB icon -->
+        <link rel="icon" href="{% static 'img/mdb-favicon.ico' %}" type="image/x-icon">
+        <script src="https://kit.fontawesome.com/ef9216c536.js" crossorigin="anonymous"></script>
+        <script src="{% static 'js/addons/rating.js' %}"></script>
+        <script src="{% static 'js/script.js' %}">
+            
+        </script>
         <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"> -->
         <link rel="stylesheet" href="{% static 'css/index.css'%}" type="text/css">
     {%endblock%}
@@ -42,7 +51,11 @@
         
     
     {% block script %}
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <!-- Bootstrap tooltips -->
+        <script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
+        <!-- MDB core JavaScript -->
+        <script type="text/javascript" src="{% static 'js/mdb.min.js' %}"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         {%bootstrap_javascript%}
         <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script> -->
         <script>

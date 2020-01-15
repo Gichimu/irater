@@ -3,19 +3,29 @@ from allauth.account.forms import LoginForm, ChangePasswordForm, SignupForm
 from allauth.account.views import LoginView
 from django.contrib.auth.models import User
 from .models import Profile, Project
-from .forms import createForm, editForm, MyCustomLoginForm, MyCustomSetPasswordForm
+from .forms import createForm, editForm, MyCustomLoginForm, MyCustomSetPasswordForm, ratingForm
 
 def home(request):
     title = 'Home'
-    return render(request, 'index.html', {'title': title})
+    try:
+        posts = Project.objects.all()
+        for post in posts:
+            name = post.title.split()
+            if len(name) > 1:
+                post.title = '_'.join(name)
+            else:
+                pass
+    except Project.DoesNotExist:
+        posts = None
+    return render(request, 'index.html', {'title': title, 'posts': posts})
 
 def signup(request):
     form = SignupForm()
     return render(request, 'account/signup.html', {'form': form})
 
-def login(request):
-    form = MyCustomLoginForm()
-    return render(request, 'account/login.html', {'form': form})
+# def login(request):
+#     form = MyCustomLoginForm()
+#     return render(request, 'account/login.html', {'form': form})
 
 def resetPassword(request):
     form = MyCustomSetPasswordForm()
@@ -28,13 +38,18 @@ def changePassword(request):
 
 def profile(request, user_id):
     user = request.user
-    posts = Project.objects.filter(profile_id = user_id)
-    for post in posts:
-        name = post.image_name.split()
-        if len(name) > 1:
-            post.image_name = '_'.join(name)
-        else:
-            pass
+    try:
+        prof = Profile.objects.get(user_id = user_id)
+        posts = Project.objects.filter(profile_id = prof.id)
+        for post in posts:
+            name = post.title.split()
+            if len(name) > 1:
+                post.title = '_'.join(name)
+            else:
+                pass
+    except Profile.DoesNotExist:
+        posts = None
+    
     # username = user.get_username
     username = user.get_username()
     form = editForm()
@@ -66,7 +81,14 @@ def profile(request, user_id):
 
 def create_post(request):
     form = createForm(request.POST, request.FILES)
+    profile = Profile.objects.filter(user_id = request.user.id)
     if form.is_valid():
+        # title = request.POST.get['title']
+        # desc = request.POST['description']
+        # photo = request.POST['photo']
+        # url = request.POST['link']
+        # print(title)
+        # post = Project(title = title, description = desc, photo = photo, link = url)
         post = form.save(commit = False)
         post.profile = request.user
         post.save()
@@ -75,16 +97,55 @@ def create_post(request):
 
 
 def update_profile(request):
-    if request.method == 'POST':
-        
-        form = editForm(request.POST, request.FILES)
-        if form.is_valid():
-            usr = request.user
-            Profile.objects.filter(user_id=usr.id).delete()
+    form = editForm(request.POST, request.FILES)
+    if form.is_valid():
+        usr = request.user
+        try:
+            prof = Profile.objects.filter(user_id=usr.id)
+            prof.delete()
             # photo = request.POST['photo']
             # bio = request.POST['bio']
             # profile = Profile.objects.filter(user_id = request.user.id).update(photo = photo, bio = bio)
             profile = form.save(commit = False)
             profile.user = request.user
             profile.save()
-        return redirect('profile', user_id = request.user.id)
+        except Profile.DoesNotExist:
+            profile = form.save(commit = False)
+            profile.user = request.user
+            profile.save()
+    return redirect('profile', user_id = request.user.id)
+
+
+def post(request, post_id):
+    post = Project.objects.get(pk = post_id)
+    form = ratingForm()
+    # if request == 'POST':
+    #     form = ratingForm(request.POST, request.FILES)
+    #     if form.is_valid():
+    #         usability = request.POST.get('usability')
+    #         design = request.POST.get('design')
+    #         content = request.POST.get('content')
+
+    #         average = (usability + design + content) / 3
+    #         post = form.save(commit = False)
+    #         post.avg = average
+    #         post.save()
+    #         print('your rating has been sent')
+    # else:
+    #     form = ratingForm()
+    return render(request, 'post.html', {'post': post, 'form': form})
+
+def rate(request, post_id):
+    form = ratingForm(request.POST, request.FILES)
+    if form.is_valid():
+        usability = request.POST.get('usability')
+        design = request.POST.get('design')
+        content = request.POST.get('content')
+
+        average = (int(usability) + int(design) + int(content)) / 3
+        post = form.save(commit = False)
+        post.avg = average
+        post.save()
+        print('your rating has been sent')
+    return redirect('post', post_id = post_id)
+    

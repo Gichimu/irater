@@ -1,7 +1,7 @@
 
-
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid nav-top">
+<div class="container">
+<nav class="navbar navbar-expand-lg navbar-dark default-color">
+    <!-- <div class="container-fluid nav-top"> -->
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent"
             aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -9,13 +9,21 @@
         <div class="collapse navbar-collapse nav" id="navbarContent">
             <a href="/" class="navbar-brand">iRater</a>
             <form class="form-inline" action="/search" method="post">
-                {%csrf_token%}
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" name="search" aria-label="Search">
+                
+                <div class="md-form form-sm my-0">
+                        {%csrf_token%}
+                        <input class="form-control form-control-sm mr-sm-2 mb-0" type="text" placeholder="Search"
+                          aria-label="Search">
+                      </div>
             </form>
             {%if user.is_authenticated %}
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        {{ user.socialaccount_set.all.0.extra_data.name }}
+                {%if user.socialaccount_set.all.0.extra_data.name%} 
+                    {{ user.socialaccount_set.all.0.extra_data.name }}
+                {%else%}
+                    {{ username }}
+                {%endif%}
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="/profile/{{user.id}}">Profile</a>
@@ -27,7 +35,7 @@
             {%else%}
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    User
+                    <i class="fas fa-user"></i>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown" id="dd">
                     <a class="dropdown-item" href="/accounts/login">Sign in</a>
@@ -42,4 +50,4 @@
     </div>
 </nav> 
 
-
+</div>

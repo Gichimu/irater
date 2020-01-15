@@ -1,5 +1,5 @@
 from django import forms
-from .models import Project, Profile
+from .models import Project, Profile, Rating
 from allauth.account.forms import LoginForm, SignupForm, ResetPasswordForm
 # from pyuploadcare.dj.models import ImageField
 
@@ -13,6 +13,12 @@ class createForm(forms.ModelForm):
     class Meta:
         model = Project
         fields = ['title', 'description', 'photo', 'link']
+
+class ratingForm(forms.ModelForm):
+    class Meta:
+        model = Rating
+        fields = ['usability', 'design', 'content']
+        exclude = ['avg']
 
 class MyCustomLoginForm(LoginForm):
     def __init__(self, *args, **kwargs):

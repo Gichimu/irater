@@ -1,0 +1,1 @@
+web: gunicorn irater.wsgi --log-file -
