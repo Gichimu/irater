@@ -12,7 +12,7 @@
 }
 
 .content {
-    padding: 10px;
+    margin-top: 2%;
 }
 
 a {
@@ -29,6 +29,7 @@ a:hover {
     padding: 2%;
     box-shadow: 5px 10px 18px #888888;
     width: 90%;
+    margin-top: 1%;
 }
 
 .follows {

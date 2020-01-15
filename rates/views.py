@@ -83,11 +83,11 @@ def create_post(request):
     form = createForm(request.POST, request.FILES)
     profile = Profile.objects.filter(user_id = request.user.id)
     if form.is_valid():
-        title = request.POST.get['title']
-        desc = request.POST['description']
-        photo = request.POST['photo']
-        url = request.POST['link']
-        print(title)
+        # title = request.POST.get['title']
+        # desc = request.POST['description']
+        # photo = request.POST['photo']
+        # url = request.POST['link']
+        # print(title)
         # post = Project(title = title, description = desc, photo = photo, link = url)
         post = form.save(commit = False)
         post.profile = request.user
@@ -97,25 +97,23 @@ def create_post(request):
 
 
 def update_profile(request):
-    if request.method == 'POST':
-        
-        form = editForm(request.POST, request.FILES)
-        if form.is_valid():
-            usr = request.user
-            try:
-                prof = Profile.objects.filter(user_id=usr.id)
-                prof.delete()
-                # photo = request.POST['photo']
-                # bio = request.POST['bio']
-                # profile = Profile.objects.filter(user_id = request.user.id).update(photo = photo, bio = bio)
-                profile = form.save(commit = False)
-                profile.user = request.user
-                profile.save()
-            except Profile.DoesNotExist:
-                profile = form.save(commit = False)
-                profile.user = request.user
-                profile.save()
-        return redirect('profile', user_id = request.user.id)
+    form = editForm(request.POST, request.FILES)
+    if form.is_valid():
+        usr = request.user
+        try:
+            prof = Profile.objects.filter(user_id=usr.id)
+            prof.delete()
+            # photo = request.POST['photo']
+            # bio = request.POST['bio']
+            # profile = Profile.objects.filter(user_id = request.user.id).update(photo = photo, bio = bio)
+            profile = form.save(commit = False)
+            profile.user = request.user
+            profile.save()
+        except Profile.DoesNotExist:
+            profile = form.save(commit = False)
+            profile.user = request.user
+            profile.save()
+    return redirect('profile', user_id = request.user.id)
 
 
 def post(request, post_id):
@@ -138,18 +136,16 @@ def post(request, post_id):
     return render(request, 'post.html', {'post': post, 'form': form})
 
 def rate(request, post_id):
-    
-    if request == 'POST':
-        form = ratingForm(request.POST, request.FILES)
-        if form.is_valid():
-            usability = request.POST.get('usability')
-            design = request.POST.get('design')
-            content = request.POST.get('content')
+    form = ratingForm(request.POST, request.FILES)
+    if form.is_valid():
+        usability = request.POST.get('usability')
+        design = request.POST.get('design')
+        content = request.POST.get('content')
 
-            average = (usability + design + content) / 3
-            post = form.save(commit = False)
-            post.avg = average
-            post.save()
-            print('your rating has been sent')
+        average = (int(usability) + int(design) + int(content)) / 3
+        post = form.save(commit = False)
+        post.avg = average
+        post.save()
+        print('your rating has been sent')
     return redirect('post', post_id = post_id)
     
